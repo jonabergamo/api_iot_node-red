@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nest & EJS ❤</title>
+    
+    <!-- CSS (load bootstrap from a CDN) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+
+    <style>
+      
+      .card {
+            margin-top: 20px;
+        }
+        .card-body i {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .true-state {
+            color: green;
+        }
+        .false-state {
+            color: black;
+            font-size: 20px;
+        }
+        #dataCriacao {
+    font-weight: bold;
+    color: #007bff; /* Cor azul do Bootstrap */
+    background-color: #f8f9fa; /* Fundo claro do Bootstrap */
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #dee2e6; /* Borda sutil */
+  }
+
+  
+    </style>
+</head>
+<body class="container">
+  <div class="container mt-5">
+    <h2 class="mb-4 text-center">Dashboard Node RED</h2>
+    <div class="text-center mb-4">
+      <button class="btn btn-outline-primary" onclick="location.reload()">Recarregar Página</button>
+    </div>
+    <p>Ultima atualização: <span id="dataCriacao"><%-createdAt%></span></h1>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-thermometer-half"></i>
+                    <h5 class="card-title">Sensor</h5>
+                    <p class="card-text false-state" id="sensor"><%-Sensor%></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-hand-pointer"></i>
+                    <h5 class="card-title">Botão</h5>
+                    <p class="card-text false-state" id="botao"><%-Botao%></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-robot"></i>
+                    <h5 class="card-title">Liga Robô</h5>
+                    <p class="card-text false-state" id="ligaRobo"><%-LigaRobo%></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-sync"></i>
+                    <h5 class="card-title">Reset Contador</h5>
+                    <p class="card-text false-state" id="resetContador"><%-ResetContador%></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-sort-numeric-up"></i>
+                    <h5 class="card-title">Valor Contagem</h5>
+                    <p class="card-text" id="valorContagem"><%-ValorContagem%></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-5">
+  <h2 class="mb-4 text-center">Histórico</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Data</th>
+        <th>Sensor</th>
+        <th>Botão</th>
+        <th>Liga Robô</th>
+        <th>Reset Contador</th>
+        <th>Valor Contagem</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% allData.forEach(function(dado) { %>
+        <tr>
+          <td><%- new Date(dado.createdAt).toLocaleString() %></td>
+          <td class="<%= dado.Sensor ? 'true-state' : 'false-state' %>"><%- dado.sensor %></td>
+          <td class="<%= dado.Botao ? 'true-state' : 'false-state' %>"><%- dado.botao %></td>
+          <td class="<%= dado.LigaRobo ? 'true-state' : 'false-state' %>"><%- dado.LigaRobo %></td>
+          <td class="<%= dado.ResetContador ? 'true-state' : 'false-state' %>"><%- dado.ResetContador %></td>
+          <td><%- dado.ValorContagem %></td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+<script>
+
+  
+  const dataISO = document.getElementById('dataCriacao').textContent;
+  const data = new Date(dataISO);
+
+  // Inclui segundos na formatação
+  const dataFormatada = data.getDate().toString().padStart(2, '0') + '/' +
+                         (data.getMonth() + 1).toString().padStart(2, '0') + '/' +
+                         data.getFullYear() + ' ' +
+                         data.getHours().toString().padStart(2, '0') + ':' +
+                         data.getMinutes().toString().padStart(2, '0') + ':' + // Inclui os segundos
+                         data.getSeconds().toString().padStart(2, '0');
+
+  document.getElementById('dataCriacao').textContent = dataFormatada;
+
+
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
