@@ -2,11 +2,11 @@
 https://docs.nestjs.com/providers#services
 */
 
-import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
-import { Data } from "src/schemas/data.schema";
-import { CreateDataDto } from "./dto/create-data.dto";
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Data } from 'src/schemas/data.schema';
+import { CreateDataDto } from './dto/create-data.dto';
 
 @Injectable()
 export class DataService {
@@ -30,7 +30,9 @@ export class DataService {
 
   // Atualiza um documento Data pelo ID
   update(id: string, updateDataDto: CreateDataDto): Promise<Data> {
-    return this.dataModel.findByIdAndUpdate(id, updateDataDto, { new: true }).exec();
+    return this.dataModel
+      .findByIdAndUpdate(id, updateDataDto, { new: true })
+      .exec();
   }
 
   // Deleta um documento Data pelo ID
@@ -40,5 +42,20 @@ export class DataService {
 
   getLast(): Promise<Data> {
     return this.dataModel.findOne().sort({ createdAt: -1 }).exec();
+  }
+
+  async createRandom(): Promise<Data> {
+    // Exemplo de criação de dados aleatórios
+    const randomData: CreateDataDto = {
+      // Supondo que CreateDataDto tenha esses campos
+      sensor: Math.random() >= 0.5,
+      botao: Math.random() >= 0.5,
+      LigaRobo: Math.random() >= 0.5,
+      ResetContador: Math.random() >= 0.5,
+      ValorContagem: Math.floor(Math.random() * 100), // Um número aleatório entre 0 e 99
+    };
+
+    const newData = new this.dataModel(randomData);
+    return newData.save();
   }
 }

@@ -2,12 +2,20 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
-import { DataService } from "./data.service";
-import { Data } from "src/schemas/data.schema";
-import { CreateDataDto } from "./dto/create-data.dto";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
+import { DataService } from './data.service';
+import { Data } from 'src/schemas/data.schema';
+import { CreateDataDto } from './dto/create-data.dto';
 
-@Controller("data")
+@Controller('data')
 export class DataController {
   constructor(private readonly dataService: DataService) {}
 
@@ -16,8 +24,8 @@ export class DataController {
     return this.dataService.getAll();
   }
 
-  @Get(":id")
-  async getDataById(@Param("id") id: string): Promise<Data> {
+  @Get(':id')
+  async getDataById(@Param('id') id: string): Promise<Data> {
     return this.dataService.getById(id);
   }
 
@@ -26,13 +34,18 @@ export class DataController {
     return this.dataService.create(data);
   }
 
-  @Put(":id")
-  async updateData(@Param("id") id: string, @Body() data: Data): Promise<Data> {
+  @Put(':id')
+  async updateData(@Param('id') id: string, @Body() data: Data): Promise<Data> {
     return this.dataService.update(id, data);
   }
 
-  @Delete(":id")
-  async deleteData(@Param("id") id: string): Promise<Data> {
+  @Delete(':id')
+  async deleteData(@Param('id') id: string): Promise<Data> {
     return this.dataService.delete(id);
+  }
+
+  @Post('random')
+  async create_random() {
+    return this.dataService.createRandom();
   }
 }
